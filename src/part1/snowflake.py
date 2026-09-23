@@ -25,34 +25,14 @@ from .constants import (  # noqa: F401
 
 
 def read_current_millis(epoch_ms: int) -> int:
-    """Read the number of milliseconds elapsed since the custom epoch.
-
-    Args:
-        epoch_ms: The custom epoch expressed as Unix milliseconds.
-
-    Returns:
-        The count of whole milliseconds between ``epoch_ms`` and now. May be
-        negative if ``epoch_ms`` lies in the future.
-    """
-    current_millis = time.time_ns() // 1_000_000
-    # TODO: реализуйте функцию
-    return (current_millis - epoch_ms)
+    unix_epoch_time = time.time_ns() // 1_000_000_000
+    return (unix_epoch_time - epoch_ms)
 
 
 def decode_timestamp_ms(snowflake_id: int, epoch_ms: int = EPOCH_MS_DEFAULT) -> int:
-    """Read the timestamp field out of a Snowflake identifier.
-
-    Args:
-        snowflake_id: An identifier produced against the same epoch.
-        epoch_ms: The epoch the identifier was generated against. Defaults to
-            the original Twitter epoch (2010-11-04 01:42:54.657 UTC).
-
-    Returns:
-        The absolute Unix time in milliseconds at which the identifier was
-        generated.
-    """
-    # TODO: реализуйте функцию
-    return 0
+    snowflake_binary = bin(snowflake_id)[2:]
+    snowflake_ms_binary = (snowflake_binary.zfill(63))[:41]
+    return (int(snowflake_ms_binary) + epoch_ms)
 
 
 def decode_node_id(snowflake_id: int) -> int:
@@ -65,22 +45,17 @@ def decode_node_id(snowflake_id: int) -> int:
         The node identifier packed into ``snowflake_id``, in the range
         ``[0, NODE_ID_MAX]``.
     """
+    snowflake_binary = bin(snowflake_id)[2:]
+    snowflake_node_id_binary = bin(snowflake_binary.zfill(63))[41:51])
     # TODO: реализуйте функцию
-    return 0
+    return int(snowflake_node_id_binary)
 
 
 def decode_sequence_id(snowflake_id: int) -> int:
-    """Read the sequence counter field out of a Snowflake identifier.
-
-    Args:
-        snowflake_id: An identifier produced by :func:`generate_snowflake_id`.
-
-    Returns:
-        The per-millisecond sequence counter packed into ``snowflake_id``, in
-        the range ``[0, SEQUENCE_ID_MAX]``.
-    """
+    snowflake_binary = bin(snowflake_id)[2:]
+    snowflake_sequence_id_binary = bin(snowflake_binary.zfill(63))[51:])
     # TODO: реализуйте функцию
-    return 0
+    return int(snowflake_sequence_id_binary)
 
 
 def generate_snowflake_id(
