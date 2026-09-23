@@ -34,8 +34,9 @@ def read_current_millis(epoch_ms: int) -> int:
         The count of whole milliseconds between ``epoch_ms`` and now. May be
         negative if ``epoch_ms`` lies in the future.
     """
+    current_millis = time.time_ns() // 1_000_000
     # TODO: реализуйте функцию
-    return 0
+    return (current_millis - epoch_ms)
 
 
 def decode_timestamp_ms(snowflake_id: int, epoch_ms: int = EPOCH_MS_DEFAULT) -> int:
@@ -87,6 +88,18 @@ def generate_snowflake_id(
     node_id: int = NODE_ID_DEFAULT,
     epoch_ms: int = EPOCH_MS_DEFAULT,
 ) -> int | None:
+    
+    if node_id < 0 or node_id > NODE_ID_MAX:
+        print(f"Invalid node_id: {node_id}, node_id must be in [0, {NODE_ID_MAX}].")
+        return None
+    if sequence_id < 0 or sequence_id > SEQUENCE_MAX:
+        print(f"Invalid sequence_id: {sequence_id}, sequence_id must be in [0, {SEQUENCE_MAX}].")
+        return None
+    if epoch_ms < 0 or epoch_ms > TIMESTAMP_MS_MAX:
+        print(f"Invalid epoch_ms: {epoch_ms}, epoch_ms must be in [0, {TIMESTAMP_MS_MAX}].")
+        return None
+
+    
     """Build and return a Snowflake identifier for the current millisecond.
 
     The function is stateless: the caller passes the per-millisecond sequence
