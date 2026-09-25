@@ -25,7 +25,7 @@ from .constants import (  # noqa: F401
 
 
 def read_current_millis(epoch_ms: int) -> int:
-    unix_epoch_time = time.time_ns() // 1_000_000 # get current time in milliseconds
+    unix_epoch_time = time.time_ns() // 1_000_000 #get current time in milliseconds
     return (unix_epoch_time - epoch_ms)
 
 
