@@ -66,4 +66,3 @@ def generate_snowflake_id(
         | sequence_id
     )
 
-print(decode_timestamp_ms(generate_snowflake_id(0,)))
