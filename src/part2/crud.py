@@ -33,7 +33,7 @@ def create_product(
     storage: list[Product], fields: tuple[str, Decimal, int]
 ) -> int | None:
     if fields[0] in (product[NAME_INDEX] for product in storage):
-        print(f'The name "{fields[0]}" is already used')
+        print(f'product name "{fields[0]}" is already used')
         return None
 
     product_id = generate_product_id(storage)
